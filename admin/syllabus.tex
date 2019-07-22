@@ -1,0 +1,267 @@
+\documentclass[11pt]{article}
+\input{rtmpreamb}
+\usepackage{bibentry}
+\newcommand{\bibverse}[1]{\begin{verse} \bibentry{#1}. \end{verse}}
+\usepackage{hyperref}
+\title{2K: Causal Inference and Experiments in the Social Sciences}
+\author{Ryan T. Moore\footnote{\rtmaddr}}
+\date{\today~at \xxivtime}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+\hypersetup{
+  colorlinks = true,
+  linkcolor=blue, % color of internal links
+  citecolor=blue, % color of links to bibliography
+  urlcolor=blue, % color of external links
+  pagebackref=true,
+  implicit=false,
+  bookmarks=true,
+  bookmarksopen=true,
+  pdfdisplaydoctitle=true
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{Course Information}
+Course 2K: Causal Inference and Experiments in the Social Sciences\\
+Essex Summer School in Social Science and Data Analysis\\
+Session 2: 22 July - 2 August 2019\\
+Monday-Friday 14:15-17:45\\
+Room 2.02 / Lab G\\
+
+\section*{Instructor Information}
+Ryan T. Moore, Ph.D. \\
+Associate Professor of Government\\
+Homepage: \url{http://www.ryantmoore.org} \\
+Email: {\tt rtm} (at) {\tt american} (dot) {\tt edu} \\
+
+\vspace{.1in}
+
+\noindent Melle Albada\\
+Email: {\tt mellealbada} (at) {\tt gmail} (dot) {\tt com} \\
+
+
+\section*{Course Description}
+
+This course is an introduction to causal inference and experiments for the social sciences.  We will discuss the nature of causal research, how to design research to answer different types of causal questions, how to analyze experimental (and perhapts observational) data, how to implement analysis using the R statistical language, and how to interpret the results of causal analyses.  Specific topics will include potential outcomes, experiments, blocked designs, conjoint, list, and multiarm bandit survey experiments.  We will examine observational matching, sensitivity, instruments, discontinuities, synthetic controls, and other special topics as permitted and as student interest dictates.
+
+
+\section*{Learning Objectives}
+
+By the end of the course, you should be able to 
+
+\begin{itemize}
+\item Identify causal effects using the potential outcomes framework
+\item Perform design-based inference for randomized experiments
+\item Create and analyze variety of randomized designs, including for blocked, conjoint, list, and multiarm bandit experiments
+%\item Identify appropriate designs for causal inference in observational data, implement them, and interpret them; these include matching, instrumental variables, regression discontinuities, and synthetic controls
+%\item Assess the sensitivity of estimates to unmeasured confounders
+\item Estimate mediation effects and assess their sensitivity
+\end{itemize}
+
+\section*{Learning Strategies}
+
+\subsection*{Readings}
+
+Readings should be completed before the course meeting under which they are listed below.  
+
+The primary textbook for the course is 
+
+\nobibliography*
+
+\bibverse{gergre12}
+
+
+\subsection*{Problem Sets}
+The problem sets should be completed outside of class.  You may work with others currently taking the course on the problem sets, but every keystroke of your submission must be your own.  You may not copy code or answers from others, but you may develop your code with classmates.  You are responsible for understanding every line of code you submit.  Academic integrity is a core value of institutions of higher learning.
+It is your responsibility to avoid and report plagiarism, cheating, and
+dishonesty.  
+
+
+\section*{Software}
+
+The primary software for the course is R.  See \href{http://www.ryantmoore.org/files/class/introPolResearch/intro_R_short.pdf}{http://j.mp/2swvN0p}
+for help getting started.   
+
+\section*{Intellectual Property}
+Course content is the intellectual property of the instructor or student who created it, and may not be recorded or distributed without consent.
+
+
+
+
+\section*{Calendar}
+\renewcommand{\labelitemi}{$\square$}
+
+	\subsection*{Day 1: Monday, 22 July}
+	Introduction to causal inference.\\
+	The potential outcomes framework.  Estimands.\\
+	Introduction to computing environments. \\
+Lab: Introduction to R
+
+%\begin{itemize}
+%	\item Required reading: 	This syllabus.
+%\end{itemize}
+
+\subsection*{Day 2: Tuesday, 23 July}
+Randomized experiments I: Motivation, inference, testing.
+
+%\noindent Potential outcomes framework:
+%\begin{itemize}
+%	\item \bibverse{holland86cv}
+%	\item \bibverse{litrub00}
+%\end{itemize}
+
+%\noindent Randomized experiments:
+\begin{itemize}
+	\item Submit PS1: Gerber and Green 2.1, 2.10, 2.12
+	\item Chapters 2 and 3 of \bibverse{gergre12}
+\end{itemize}
+
+
+\subsection*{Day 3: Wednesday, 24 July}
+Randomized experiments II: Covariates, blocked designs.
+
+\begin{itemize}
+	\item Submit PS2: 3.1, 3.5
+	\item Chapter 4 of Gerber and Green
+	\item \bibverse{moore12cv}
+	\item \bibverse{moomoo13cv}
+\end{itemize}
+
+
+\subsection*{Day 4: Thursday, 25 July}
+Regression and Experiments.  Heterogeneous treatment effects.
+
+\begin{itemize}
+	\item Submit PS3
+	\item Chapter 9 of Gerber and Green
+\end{itemize}
+
+
+\subsection*{Day 5: Friday, 26 July}
+Survey experiments.  Conjoints, item counts, lists.
+
+\begin{itemize}
+	\item Submit PS4
+	\item \bibverse{sniderman18}
+	\item \bibverse{haihopyam14}
+	\item \bibverse{horyussmi18}
+	\item \bibverse{blaima12}
+	\item \bibverse{blaimalya14}
+\end{itemize}
+
+
+\subsection*{Day 6: Monday, 29 July}	
+Multiarm bandits.
+
+\begin{itemize}
+	\item \bibverse{offcopgre18}
+	\item \bibverse{kulpre14}
+	\item \bibverse{gupgraagr11}
+\end{itemize}
+
+
+\subsection*{Day 7:  Tuesday, 30 July}
+Lab Experiments.  ESSEXLab Visit.
+
+\begin{enumerate}[$\bullet$]
+	\item Interactive incented experiments
+	\item Biometric demonstration in conjoint experiments
+	\item zTree/oTree programming introduction
+\end{enumerate}
+
+\begin{itemize}
+	\item Submit PS6
+\end{itemize}
+
+
+\subsection*{Day 8: Wednesday, 31 July}
+
+Interference.  Time-varying treatments and covariates.
+\begin{itemize}
+	\item Chapter 8 of Gerber and Green
+	\item \bibverse{hudhal08}
+	\item \bibverse{rose:07}
+	\item \bibverse{sobe:06}
+	\item \bibverse{blackwell13}
+\end{itemize}
+
+\subsection*{Day 9: Thursday, 1 August}
+
+Mediation.
+\begin{itemize}
+	\item Submit PS7
+	\item Chapter 10 of Gerber and Green
+	\item \bibverse{imakeetin11}
+	\item \bibverse{bulgreha10}
+	\item \bibverse{imakeeyam10}
+\end{itemize}
+
+\subsection*{Day 10: Friday, 2 August}
+
+Registration, Replication, Declaration
+
+\clearpage
+
+\subsection*{Additional Topic}
+Observational studies: Designs for causal inference.\\
+
+\begin{itemize}
+	\item \bibverse{rubin07}
+	\item \bibverse{hoimakin07}
+	\item \bibverse{imakinstu08}
+\end{itemize}
+
+
+\subsection*{Additional Topic}
+
+Matching for Observational Designs
+	
+Matching on the propensity score.  Matching on coarsened measures.\\
+\begin{itemize}
+	\item \bibverse{rosrub83}
+	\item \bibverse{imarat14}
+	\item \bibverse{iackinpor12}
+\end{itemize}
+
+
+\subsection*{Additional Topic}
+Sensitivity.
+
+%\begin{itemize}
+%	\item \bibverse{imakeeyam10}
+%\end{itemize}
+
+\subsection*{Additional Topic}
+Encouragement designs, instrumental variables.  ``Local'' treatment effects.
+\begin{itemize}
+	\item Chapters 5 and 6 of Gerber and Green
+	\item \bibverse{AIR:96}
+\end{itemize}
+
+\subsection*{Additional Topic}
+
+Regression discontinuity designs.  Milestones.
+\begin{itemize}
+	\item \bibverse{causek11}
+	\item \bibverse{imblem08}
+\end{itemize}
+
+\subsection*{Additional Topic}
+Synthetic control methods.  Interrupted time series.
+
+\begin{itemize}
+	\item \bibverse{abagar03}
+	\item \bibverse{abadiahai10}
+	\item \bibverse{abadiahai11}
+\end{itemize}
+
+
+\bibliographystyle{plain}
+\nobibliography{/Users/rtm/Documents/Dropbox/research/computing/bib/master}
+
+\end{document}
