@@ -1,0 +1,860 @@
+---
+title: | 
+    | Potential Outcomes and Randomized Experiments
+header-includes:
+  - \usepackage{datetime}
+  - \usepackage{natbib}
+  - \usepackage{amsmath}
+  - \usepackage{wasysym}
+date: "23 July 2019"
+author: Ryan T. Moore
+output:
+  beamer_presentation:
+    slide_level: 2
+    toc: true
+    fonttheme: serif
+    includes:
+      in_header: zzz_beamer_header.tex
+  pdf_document:
+    fig_caption: true
+    number_sections: true
+    urlcolor: blue
+link-citations: yes 
+bibliography: "../admin/master.bib"
+---
+  
+```{r knitr options, echo=FALSE, warning=FALSE}
+# Encoding required for proper knitr rendering
+options(encoding = "native.enc")
+```
+
+```{r enviro, warning = FALSE, results = 'hide', echo = FALSE, message = FALSE}
+####  Computing Environment
+
+## Load libraries:
+library(tidyr) 
+library(dplyr)
+library(ggplot2)
+library(xtable)
+library(coefplot)
+library(knitr)
+library(png)
+library(grid)
+library(gridExtra)
+library(readr)
+library(modelr)
+library(tibble)
+library(devtools)
+library(forcats)
+library(stringr)
+library(magrittr)
+library(purrr)
+
+## RTM directory:
+#setwd("~/Documents/github/r-data-science/notes/")
+#opts_knit$set(root.dir = "~/Desktop/")
+
+```
+
+<!-- Include screenshot: -->
+<!-- ```{r fig.width=4.4, echo=FALSE} -->
+<!-- img <- readPNG("figs/viz-practice.png") -->
+<!-- grid.raster(img) -->
+<!-- ``` -->
+
+<!-- Include a pdf fig: -->
+
+<!-- \begin{center} -->
+<!-- \includegraphics[height=3.1in]{figs/viz-facet-MedNoneRace.pdf} -->
+<!-- \end{center} -->
+
+# Preliminaries 
+
+## Preliminaries
+
+\Large
+
+- PS1 for today
+- PS2 for tomorrow
+- `.Rmd`
+
+
+
+***
+
+![Ramsey & Schafer, _The Statistical Sleuth_](figs/02-grid.pdf)
+
+
+## Review Questions
+
+\large
+
+1. When can we observe both $Y_i(1)$ and $Y_i(0)$?  
+2. What is this fact called?
+3. When does the empirical difference-in-means estimator exactly equal the true, underlying ATE?
+4. What are the two parts of SUTVA?
+
+
+
+<!-- ## The Potential Outcomes Model: Ideas -->
+
+<!-- \Large -->
+
+<!-- Stable Unit Treatment Value Assumption (SUTVA) -->
+
+<!-- >- No versions of the treatment, varying in effectiveness -->
+<!-- >- No interference between units -->
+
+***
+
+\LARGE
+
+\begin{center}
+Exercise in Potential Outcomes
+\end{center}
+
+# Statistical Refreshment
+
+## Expectation
+
+\large
+$$E(Y) = \sum\limits_{i=1}^n [y_i \cdot p(y_i)]$$
+\pause 
+
+Calculate $E(\text{Ideology})$.
+
+| Respondent | Ideology |
+| :--------: | :------: |
+|     1      |    3     |
+|     2      |    -2    |
+|     3      |    3     |
+|     4      |    1     |
+|     5      |    1     |
+
+
+
+## Conditional Expectation
+
+\large
+
+$$E(Y | X = x) = \sum\limits_{i=1}^n [y_i \cdot p(y_i | X = x)]$$
+
+\pause 
+
+Calculate $E(\text{Ideology} | \text{Dem} = 0)$.
+
+| Respondent | Ideology | Dem |
+| :--------: | :------: | :-: |
+|     1      |    3     |  0  |
+|     2      |    -2    |  1  |
+|     3      |    3     |  0  |
+|     4      |    1     |  0  |
+|     5      |    1     |  1  |
+
+
+
+## Conditional Expectation
+
+\large
+
+$$E(Y | X = x) = \sum\limits_{i=1}^n [y_i \cdot p(y_i | X = x)]$$
+
+Calculate $E(\text{Ideology} | \text{Dem} = 0)$ -- wide data, as counts.
+
+|          |     | Dem?    |
+| :------: | :-: | :-: | - |
+|          |     | 0   | 1 |
+|          | 3   | 2   | 0 |
+| Ideology | 1   | 1   | 1 |
+|          | -2  | 0   | 1 |
+
+
+## Conditional Expectation
+
+\large
+
+$$E(Y | X = x) = \sum\limits_{i=1}^n [y_i \cdot p(y_i | X = x)]$$
+
+Calculate $E(\text{Ideology} | \text{Dem} = 0)$ -- wide data, as probs.
+
+|          |     | Dem?    |
+| :------: | :-: | :-: | - |
+|          |     | 0   | 1 |
+|          | 3   | 0.4   | 0.0 |
+| Ideology | 1   | 0.2   | 0.2 |
+|          | -2  | 0.0   | 0.2 |
+
+
+## Unbiasedness
+
+\Large
+
+$$E(\hat{\theta}) = \theta$$
+
+\pause 
+\vspace{5mm}
+
+>- $E\left[ \widehat{\overline{Y_1 - Y_0}} \right] = \overline{Y_1 - Y_0}$
+>- $E\left[ \widehat{\beta_1} \right] = \beta_1$
+
+<!-- E.g., Avg est of ATE $=$ true ATE -->
+
+## Unbiasedness
+
+\Large
+
+What estimator used to estimate $\overline{Y_1 - Y_0}$?
+
+\pause 
+\vspace{5mm}
+
+The difference-in-means estimator.
+
+\pause 
+\vspace{5mm}
+
+$$\widehat{\overline{Y_1 - Y_0}} = \left(\widehat{Y_1} | T_i = 1 \right) - 
+\left(\widehat{Y_0} | T_i = 0 \right)$$
+
+
+<!-- Strictly, these should be t_i = 1, e.g. (see GG) -->
+
+## Probability
+
+\large
+
+The Three Axioms
+
+1. $P(A) \geq 0$
+2. $P(\Omega) = 1$
+3. If events _mutually exclusive_ (or, sets _disjoint_), then $$P(A \text{ or } B) = P(A) + P(B)$$
+
+
+## Conditional Probability
+
+\large
+
+For events $A$ and $B$, 
+
+\begin{eqnarray*}
+P(A \text{ and } B) & = & P(A) P(B|A)\\
+& = & P(B) P(A|B)
+\end{eqnarray*}
+
+Divide both sides by marginal probability $P(B)$ yields
+
+\begin{eqnarray*}
+P(A|B) & = & \frac{P(A \text{ and } B)}{P(B)}
+\end{eqnarray*}
+
+## Statistical Independence
+
+\large
+
+$A$ and $B$ are independent iff both
+
+$$P(A | B) = P(A)$$ and $$P(B|A) = P(B)$$
+
+## Conditional Independence
+
+\large
+
+$A$ and $B$ can be independent _conditional on $C$_.  
+
+\pause 
+\vspace{4mm}
+
+Many times, _only_ independent given $C$.
+
+\pause 
+\vspace{4mm}
+
+E.g., $Y_1, Y_0$ indep of $T$, given $X$.
+
+\pause 
+\vspace{4mm}
+
+$$P(A \text{ and } B |C) = P(A|C)P(B|C)$$
+
+## Potential Outcomes Model: Estimands
+
+- Individual TE
+\begin{displaymath}
+\tau_i = Y_i(1) - Y_i(0)
+\end{displaymath}
+
+- Average treatment effect
+	\begin{displaymath}
+	ATE = E(Y_1 - Y_0) = E(Y_1) - E(Y_0)	
+	\end{displaymath}
+
+- Average treatment effect for the treated
+	\begin{displaymath}
+	ATT = E(Y_1 | T = 1) - E(Y_0 | T = 1)
+	\end{displaymath} 
+
+
+## Potential Outcomes Model: Estimands
+
+The average treatment effect (ATE):
+
+\begin{eqnarray*}
+E(Y_{1} - Y_{0}) & =&  \frac{1}{2n} \sum\limits_{i=1}^{2n} \left( Y_{i1} -
+  Y_{i0} \right) \\
+  & = & \frac{1}{2n} \sum\limits_{i=1}^{2n} \left( Y_{i1} \right) -
+  \frac{1}{2n} \sum\limits_{i=1}^{2n} \left(Y_{i0} \right)\\
+& = & E(Y_{1}) - E(Y_{0}) 	%\\
+%& = & \frac{E(Y_1 | T_i =1 ) + E(Y_1 | T_i =0 )}{2} - \\
+%&& \quad \frac{E(Y_0 | T_i = 1) + E(Y_0 | T_i = 0)}{2}
+\end{eqnarray*} 
+
+
+
+## Potential Outcomes Model: Estimands
+
+- If we know $(Y_1, Y_0)$ indep of $T$ 
+<!-- (as random assignment of Tr promotes),  \pause -->
+
+- Then,
+
+\begin{eqnarray*}
+E\left(Y_{1} \right) &=& E(Y_{1} | T = 1)\\ E\left(Y_{0} \right) & = & E(Y_{0} | T = 0)	
+\end{eqnarray*}
+
+- Then, can substitute 
+
+\begin{eqnarray*}
+	ATE & = & E(Y_{1}) - E(Y_{0}) \\
+	& = & E(Y_1 | T = 1) - E(Y_0 | T = 0)
+\end{eqnarray*}
+
+\pause 
+
+Observed diff in Tr and Co group means gives ATE!
+
+
+## Potential Outcomes Model: Estimands
+
+\large
+
+Holland (1986): "_prima facie effect_": $$E(Y_t | S = t) - E(Y_c | S = c)$$
+
+\pause 
+
+"It is important to recognize that $E(Y_t)$ and $E(Y_t | S=t)$ are _not_ the same thing \ldots"
+
+
+## Potential Outcomes Model: Estimands, Interpretation
+
+Gerber & Green:
+
+When $Y(1)$ and $Y(0)$ indep of $T$, 
+\begin{eqnarray*}
+ATE & = & E(Y_i(1) | T_i = 1) - E(Y_i(0) | T_i = 0) \\ \pause 
+& = & E(Y_i(1)| T_i = 1) \alert{- E(Y_i(0) | T_i = 1) +} \\
+&& \quad \alert{E(Y_i(0) | T_i = 1)} - E(Y_i(0) | T_i = 0) \\ \pause 
+& = & \left[E(Y_i(1)| T_i = 1) - E(Y_i(0) | T_i = 1) \right] +\\
+&& \quad \left[E(Y_i(0) | T_i = 1) - E(Y_i(0) | T_i = 0) \right] \\ \pause 
+& = & E(Y_i(1) - Y_i(0) | T_i = 1) + \\
+&& \quad E(Y_i(0) | T_i = 1) - E(Y_i(0) | T_i = 0) \\
+\end{eqnarray*}
+
+\pause 
+
+$$\underbrace{E(Y_i(1) - Y_i(0) | T_i = 1)}_{\text{ATT}} + \underbrace{E(Y_i(0) | T_i = 1) - E(Y_i(0) | T_i = 0)}_{\text{Selection Bias}} $$
+
+# Assignment of Treatment
+
+## Ideas
+
+\Large
+
+>- Causal effects: relative to some other condition
+>- Treatment
+>    - timing defined
+>    - must be excludable
+>    - cannot be "attribute"
+>- Covariates: causally prior to treatment
+>- Dose-response "biological gradient" evidence
+
+
+## Attributes
+
+"Causal effect of race"?
+
+```{r warning = FALSE, message=FALSE}
+resume <- read_csv("http://j.mp/2sDjsHI")
+dim(resume)
+```
+
+\pause 
+
+```{r warning = FALSE}
+kable(table(resume$race, resume$call))
+```
+
+\pause 
+
+@senwas16 : "Race as a Bundle of Sticks: Designs that Estimate Effects of Seemingly
+Immutable Characteristics" (_elements_ of attributes varyingly manipulable)
+
+
+
+## The Potential Outcomes Model: Assignment
+
+\large
+
+Observed outcome: $Y_i = Y_i(1)\cdot T_i + Y_i(0)\cdot (1 - T_i)$ 
+
+\vspace{7mm}
+
+The assignment mechanism _selects_ which potential outcome we observe.
+
+\pause 
+
+\vspace{5mm}
+
+\normalsize
+
+(Gerber & Green use $Y_i = Y_i(1)\cdot d_i + Y_i(0)\cdot (1 - d_i)$ to highlight that we observe pot outcome from treatment actually taken, not hypothetical or assigned treatment.)
+
+
+## The Potential Outcomes Model: Assignment
+
+\Large
+
+\begin{center}
+``Assignment mechansims'' are really missing-data-generating procedures.
+\end{center}
+
+
+## Ignorability
+
+Assignment mechanism is _ignorable_ if $Y_{obs}$ conditnly indep of $T$
+
+$$P(T | X, Y_{obs}, Y_{mis}) = P(T | X, Y_{obs})$$
+
+\pause 
+
+\vspace{5mm}
+
+Nothing in unobserved $Y_{mis}$ informs relationship between $Y_{obs}$, $T$.
+
+
+
+## Unconfoundedness
+
+Some ignorable mechanisms are _unconfounded_, too.
+
+$$P(T | X, Y_{obs}, Y_{mis}) = P(T| X)$$
+
+\pause 
+
+\vspace{5mm}
+
+Nothing in $Y$ informs $T$.
+
+\pause 
+
+\vspace{5mm}
+
+These are special cases of conditional independence.
+
+
+
+## An Assignment Mechanism
+
+Little & Rubin (2000):
+
+| Patient | Y   | T   |
+| :-----: | :-: | :-: |
+| 1       | 6   | 1   |
+| 2       | 12  | 1   |
+| 3       | 9   | 0   |
+| 4       | 11  | 0   |
+
+\pause 
+
+Clearly, treatment is harmful.  $\overline{Y(1)} - \overline{Y(0)} = 9 - 10 = -1$.
+
+
+## An Assignment Mechanism
+
+Little & Rubin (2000):
+
+
+| Patient | Y(0)        | Y(1)         | $\tau$       | T |
+| :-----: | :---------: | :----------: | :----------: | - |
+| 1       |  | 6            |   | 1 |
+| 2       |  | 12           |   | 1 |
+| 3       | 9           |   |  | 0 |
+| 4       | 11          |  |  | 0 |
+||||||  
+| Mean    | 10          | 9            |   |   |
+
+
+
+Clearly, treatment is harmful.  $$\overline{Y(1) | T = 1} - \overline{Y(0) | T = 0} = 9 - 10 = -1$$
+
+
+## An Assignment Mechanism: Perfect Doctor
+
+Little & Rubin (2000):
+
+
+| Patient | Y(0)        | Y(1)         | $\tau$       | T |
+| :-----: | :---------: | :----------: | :----------: | - |
+| 1       | \alert{(1)} | 6            |   | 1 |
+| 2       | \alert{(3)} | 12           |   | 1 |
+| 3       | 9           | \alert{(8)}  |  | 0 |
+| 4       | 11          | \alert{(10)} |  | 0 |
+||||||
+| Mean    | 10          | 9            |   |   |
+
+
+\invisible{
+
+Clearly, treatment is beneficial:  $$\overline{Y(1)} - \overline{Y(0)} =9  - 6 = 3$$
+}
+
+
+## An Assignment Mechanism: Perfect Doctor
+
+Little & Rubin (2000):
+
+
+| Patient | Y(0)        | Y(1)         | $\tau$       | T |
+| :-----: | :---------: | :----------: | :----------: | - |
+| 1       | \alert{(1)} | 6            | \alert{(5)}  | 1 |
+| 2       | \alert{(3)} | 12           | \alert{(9)}  | 1 |
+| 3       | 9           | \alert{(8)}  | \alert{(-1)} | 0 |
+| 4       | 11          | \alert{(10)} | \alert{(-1)} | 0 |
+||||||
+| Mean    | 10          | 9            | \alert{(3)}  |   |
+
+
+\pause 
+
+Clearly, treatment is beneficial:  $$\overline{Y(1)} - \overline{Y(0)} =9  - 6 = 3$$
+
+\pause 
+
+This assg mechanism is non-ignorable, confounded.
+
+
+
+
+
+
+## Random Assignment Mechanisms
+
+\Large
+
+>- Simple/complete randomization  
+$\quad$ (Bernoulli trial, prob $\pi$)
+>- Complete randomization / random allocation  
+$\quad$ (fixed proportion to tr)
+>- Blocked randomizations  
+$\quad$ (fixed proportion to tr, w/in group)
+>- Cluster randomizations  
+$\quad$ (assignment at higher level)
+
+
+# Randomization (Design-based) Inference
+
+***
+
+\Huge
+
+\begin{center}
+A volunteer?
+\end{center}
+
+\pause 
+
+\large
+
+\vspace{3mm}
+
+The task: select the 2 folders with messages \pause
+
+\vspace{3mm}
+>- What is our baseline expectation/model for this process?  
+>    - ``No x-ray vision.  No ESP.  Effect of messages on choice $=0$.''
+>- What is an alternative?
+>    - ``Some way to detect messages.  Message location $\to$ choice.''  
+
+\pause 
+
+\vspace{3mm}
+
+Select!
+
+
+## Randomization Inference
+
+The possible choices:
+\begin{center}
+$\blacksquare \blacksquare \square \square \square$ \quad $\square \blacksquare \square \blacksquare \square$\\
+$\blacksquare \square \blacksquare \square \square$ \quad $\square \blacksquare \square \square \blacksquare$\\
+$\blacksquare \square \square \blacksquare \square$ \quad \alert<2->{$\square \square \blacksquare \blacksquare \square$}\\
+$\blacksquare \square \square \square \blacksquare$ \quad $\square \square \blacksquare \square \blacksquare$\\
+$\square \blacksquare \blacksquare \square \square$ \quad $\square \square \square \blacksquare \blacksquare$\\
+\end{center}
+
+\pause 
+
+\begin{itemize}
+	\item You chose $\_\_\_$ and $\_\_\_$.  Let $X=$ number found. \pause 
+	\item What was $P(X \geq 2 | \text{no ESP})$?  \pause $\frac{1}{10} = 0.1$ \pause 
+	\item What was $P(X \geq 1 | \text{no ESP})$?  \pause $\frac{7}{10} = 0.7$ \pause 
+	\item What is ``prob result at least this extreme, given model of no effect''?  \pause 
+	\item Definition of $p$-value! \pause 
+	\item Valid, exact, with no distributional assumption, no large $n$.  \pause
+	\item {\it Randomization} creates dist'n of possible numbers correct 
+\end{itemize}
+
+
+## The Randomization Distribution of $X$
+
+\begin{center}
+\only<1>{\includegraphics[angle=0, width=4in]{figs/02-riHistogram}}
+\only<2>{\includegraphics[angle=0, width=4in]{figs/02-riHistogram2}}
+\only<3>{\includegraphics[angle=0, width=4in]{figs/02-riHistogram3}}
+\end{center}
+
+
+## Parametric Null Hypothesis Significance Testing
+
+\Large
+
+- Specify and assume $H_0$
+- Define $H_A$
+- Examine reference dist'n ($t$, $\chi^2$, \ldots) under $H_0$
+- Calculate $p$-value
+- Compare to some $\alpha$; reject $H_0$ if $p<\alpha$
+
+
+
+## Randomization Inference
+
+\Large 
+
+>- Specify and assume $H_0$  
+$\quad$ (sharp null of no treatment effect)
+>- Define $H_A$
+>- Create reference dist'n from all possible values of $X$ under $H_0$  
+$\quad$ (or at least a big sample of them)
+>- What prop. of possible ``at least as extreme as'' observed?  
+$\quad \rightsquigarrow$ $p$-value!
+>- Compare to some $\alpha$; reject $H_0$ if $p<\alpha$
+>- CA ballot ordering effects (JASA 2006)
+
+
+## Randomization Inference
+
+\large 
+
+\center
+The RI $p$-value is $$p = \frac{\text{\# outcomes } \geq \text{as extreme as obs}}{\text{total \# outcomes}}$$
+
+\pause 
+
+or
+
+$$p = \frac{\text{\# randomizations producing extreme } \widehat{ATE}}{\text{total \# randomizations}}$$
+
+\pause 
+
+\vspace{2mm}
+
+How many randomizations are there?
+
+## Combinations: Counting selected sets
+
+How many ways to **select** $k$ things from a set of $n$ things?
+
+$$_n C_k = \binom{n}{k} = \frac{_n P_k}{k!} = \frac{n!}{k!(n-k)!}$$
+
+\pause 
+
+How many ways to choose 5 villages of 10 for treatment? \pause 
+
+$$_{10} C_5 = \binom{10}{5} = \frac{10!}{5!(10-5)!}$$
+\pause 
+
+$$\frac{10\cdot 9 \cdot 8 \cdot 7 \cdot 6}{5\cdot 4 \cdot 3 \cdot 2 \cdot 1} = 252$$
+
+
+## Common Assumptions, Null Hypotheses
+
+\large
+
+\begin{itemize}
+\item Constant effect:
+
+$$\tau_i = Y_{i1}-Y_{i0} = \tau \quad \forall i$$
+
+\item Null hypothesis of no average effect:
+
+$$ATE = \overline{\tau} = 0$$
+
+\item Sharp null hypothesis of no effect: 
+
+$$\tau_i = 0$$
+\end{itemize}
+
+
+## An Assignment Mechanism: Perfect Doctor
+
+\large 
+
+Calculate RI $p$-value for Perfect Doctor, under sharp null. 
+
+
+| Patient | Y(0)        | Y(1)         | $\tau$       | T |
+| :-----: | :---------: | :----------: | :----------: | - |
+| 1       | \alert{(1)} | 6            | \alert{(5)}  | 1 |
+| 2       | \alert{(3)} | 12           | \alert{(9)}  | 1 |
+| 3       | 9           | \alert{(8)}  | \alert{(-1)} | 0 |
+| 4       | 11          | \alert{(10)} | \alert{(-1)} | 0 |
+||||||
+| Mean    | 10          | 9            | \alert{(3)}  |   |
+
+
+\pause 
+\vspace{3mm}
+
+(See `02-ri-perfect-dr.R`)
+
+
+
+## RI versus the $t$-test
+
+\Large 
+
+Perfect Doctor:
+
+- RI: $p = 1$
+- `t.test()`: $p \approx 0.8$
+- "If no tr effect, then this result typical"
+
+\pause 
+
+\vspace{4mm}
+
+\large
+
+(Odd logic of NHST: "assume false thing, how strange is data?"")
+
+## Randomization Inference
+
+\large
+
+- Resume audit study, @bermul04
+
+```{r warning = FALSE, echo = FALSE}
+resume <- read.csv("https://raw.githubusercontent.com/kosukeimai/qss/master/CAUSALITY/resume.csv")
+kable(table(resume$race, resume$call))
+```
+
+\pause 
+
+- Only possible values: $\tau_i \in \{-1, 0, 1\}$
+
+\pause 
+
+```{r warning = FALSE}
+resume %>% group_by(race) %>% summarise(call_rate = mean(call))
+```
+
+
+***
+
+\large
+
+>- Assume the sharp null $\tau_i = 0$ for every employer.
+>- $H_0: \mu_{\text{black name}} = \mu_{\text{white name}}$
+>- $H_A: \mu_{\text{black name}} \neq \mu_{\text{white name}}$
+>- Create reference dist'n of all possible assignments
+
+\pause 
+
+$$_{4870} C_{2435} = \binom{4870}{2435} = \frac{4870\cdot 4869 \cdot \ldots \cdot 2436}{2435!}$$ 
+
+\pause 
+
+$\approx 1.1 \times 10^{1464}$
+
+\pause 
+
+(There are $\approx 10^{86}$ fundamental particles in the universe.)
+
+\pause 
+
+>- Let's do 1000, or 100,000 -- something reasonable
+>- See `02-ri-resume-donate.R`
+
+
+***
+
+\begin{center}
+\only<1>{\includegraphics[angle=0, width=3.5in]{figs/02-riHist_resume1}}
+\only<2>{\includegraphics[angle=0, width=3.5in]{figs/02-riHist_resume2}}
+\end{center}
+
+## Randomization Inference
+
+\Large
+
+- Gerber & Green donations example, p. 65
+- Possible values $\tau_i \in (-\infty, \infty)$
+- $Y_1$, $Y_0$, $\tau$ likely very skewed
+- See `02-ri-resume-donate.R`
+
+
+***
+
+\begin{center}
+\only<1>{\includegraphics[angle=0, width=3.5in]{figs/02-riHist_donate1}}
+\only<2>{\includegraphics[angle=0, width=3.5in]{figs/02-riHist_donate2}}
+\end{center}
+
+## The RI Confidence Interval
+
+\large
+
+Recall that 
+
+\begin{center}
+``reject $H_0$ at $\alpha = 0.05$'' $\equiv$ ``$H_0$ falls outside 95\% CI''
+\end{center}
+
+\pause 
+\vspace{5mm}
+
+Create RI confidence intervals
+
+>- Posit $H_0: \tau = \tau^* \in \{ \ldots, -2, 1, 0, 1, 2, \ldots \}$
+>- RI test whether to reject $H_0$
+>- If not, then $\tau^*$ is in CI
+>- CI consists of set of $\tau^*$ not unusual, given data
+>- See `02-ri-resume-donate.R`
+
+
+
+***
+
+\huge
+
+\begin{center}
+Next:\\
+Covariates in Experiments\\
+PS2 due 
+
+\end{center}
+
+***
+
+\small
+
