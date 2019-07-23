@@ -1,7 +1,7 @@
 ## RI Hypothesis Tests
 ## Ryan T. Moore
 ## First: 6 July 2017
-## Last: 29 January 2019
+## Last: 23 July 2019
 
 
 # Preliminaries -----------------------------------------------------------
@@ -77,7 +77,8 @@ donate <- data.frame(tr = rep(1:0, each = 10),
                      donation = c(500, 100, 100, 50, 25, 25, 0, 0, 0, 0, 25, 20, 15, 15, 10, 5, 5, 5, 0, 0))
 
 # Calculate observed difference in means
-obs_te <- mean(donate$donation[donate$tr == 1]) - mean(donate$donation[donate$tr == 0])
+obs_te <- mean(donate$donation[donate$tr == 1]) - 
+  mean(donate$donation[donate$tr == 0])
 
 # (Alternate implementation)
 donation_by_assg <- donate %>% group_by(tr) %>% summarise(avg_donation = mean(donation))
@@ -123,6 +124,19 @@ t.test(donation ~ tr, data = donate, alternative = "less")
 
 # The RI Confidence Interval ----------------------------------------------
 
+library(ri)
+our_permutations <- genperms(donate$tr, maxiter = 1000)
+lower <- invert.ci(donate$donation, donate$tr, prob = 0.5, 
+                   perms = our_permutations,  
+                   targetp = 0.025)
+
+upper <- invert.ci(donate$donation, donate$tr, prob = 0.5, 
+                   perms = our_permutations,  
+                   targetp = 0.975)
+
+c(lower, upper)
+
+# By hand:
 ri_ci <- function(tau = 0, n_samples = 1000){
   
   df_tau_pval <- data.frame(tau = rep(NA, length(tau)),
