@@ -159,7 +159,7 @@ Calculate $E(\text{Ideology} | \text{Dem} = 0)$.
 
 $$E(Y | X = x) = \sum\limits_{i=1}^n [y_i \cdot p(y_i | X = x)]$$
 
-Calculate $E(\text{Ideology} | \text{Dem} = 0)$ -- wide data, as counts.
+Calculate $E(\text{Ideology} | \text{Dem} = 0)$ 
 
 |          |     | Dem?    |
 | :------: | :-: | :-: | - |
@@ -168,6 +168,7 @@ Calculate $E(\text{Ideology} | \text{Dem} = 0)$ -- wide data, as counts.
 | Ideology | 1   | 1   | 1 |
 |          | -2  | 0   | 1 |
 
+("wide" data, cells: counts of units with row/column scores)
 
 ## Conditional Expectation
 
@@ -175,7 +176,7 @@ Calculate $E(\text{Ideology} | \text{Dem} = 0)$ -- wide data, as counts.
 
 $$E(Y | X = x) = \sum\limits_{i=1}^n [y_i \cdot p(y_i | X = x)]$$
 
-Calculate $E(\text{Ideology} | \text{Dem} = 0)$ -- wide data, as probs.
+Calculate $E(\text{Ideology} | \text{Dem} = 0)$
 
 |          |     | Dem?    |
 | :------: | :-: | :-: | - |
@@ -183,6 +184,8 @@ Calculate $E(\text{Ideology} | \text{Dem} = 0)$ -- wide data, as probs.
 |          | 3   | 0.4   | 0.0 |
 | Ideology | 1   | 0.2   | 0.2 |
 |          | -2  | 0.0   | 0.2 |
+
+("wide" data, cells: probability unit has row/column scores)
 
 
 ## Unbiasedness
@@ -213,8 +216,8 @@ The difference-in-means estimator.
 \pause 
 \vspace{5mm}
 
-$$\widehat{\overline{Y_1 - Y_0}} = \left(\widehat{Y_1} | T_i = 1 \right) - 
-\left(\widehat{Y_0} | T_i = 0 \right)$$
+$$\widehat{\overline{Y_1 - Y_0}} = \left(Y_1 | T_i = 1 \right) - 
+\left(Y_0 | T_i = 0 \right)$$
 
 
 <!-- Strictly, these should be t_i = 1, e.g. (see GG) -->

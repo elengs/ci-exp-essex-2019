@@ -1,14 +1,95 @@
+
+# Intro to R Packages -----------------------------------------------------
+
+
+# Only needed once:
+# install.packages(blockTools) 
+library(blockTools)
+
+# Intro to R Data ---------------------------------------------------------
+
+# Vectors:
+# Create with c(), 1:5, rep(), etc.
+x <- 3:10
+
+# Extract elements with []
+x[1]
+
+# Data frames
+
+df <- data.frame(x = 3:10, 
+                 y = sample(0:1, size = 8, replace = TRUE))
+
+df
+
+df[1, 2]
+
+df$x
+
+df$y[3]
+
+df$x[df$y == 0]
+
+# Some packages come with data:
+
+# From blockTools:
+data(x100)
+
+# From fivethirtyeight.com stories
+library(fivethirtyeight)
+help(package = "fivethirtyeight")
+data("cand_events_20150114")
+
+head(cand_events_20150114)
+
+data("trump_twitter")
+dim(trump_twitter)
+head(trump_twitter)
+
+data("steak_survey")
+head(steak_survey)
+table(steak_survey$steak_prep)
+
+
+# Some data are on the web:
+
+resume <- read_csv("http://j.mp/2sDjsHI")
+
+
+# Intro to for loops ------------------------------------------------------
+
+# i is a variable:
+
+for(i in 1:10){
+  print(i)
+}
+
+for(i in x){
+  print(i)
+}
+
+# Clean up
+ls()
+
+rm(list = ls())
+
+# RI for the Perfect Doctor -----------------------------------------------
+
+# Create y1, y0 under the sharp null:
 y1 <- c(6, 12, 9, 11)
 y0 <- c(6, 12, 9, 11)
 
-
+# Create treatment vector
 t <- c(1, 1, 0, 0)
+
+# Calculate obs difference in means, given t:
 mean(y1[t == 1]) - mean(y0[t == 0])
 
+# Calculate difference in means, given new t:
 t <- c(1, 0, 1, 0)
 mean(y1[t == 1]) - mean(y0[t == 0])
 
-
+# Create a function that takes t, calculates and returns diff-in-means:
 est_te <- function(t){
   
   dm <- mean(y1[t == 1]) - mean(y0[t == 0])
