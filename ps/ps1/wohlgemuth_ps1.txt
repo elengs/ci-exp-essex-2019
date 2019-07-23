@@ -1,0 +1,43 @@
+**********************
+PS1 - Felix Wohlgemuth
+**********************
+
+Q:2.1.a Explain the notion "Y_i(0)"
+A: Potential outcome of a subject in the experiment without treatment
+
+Q:2.1.b Explain the notion "Y_i(0)|D_i = 1" and contrast it with the notion "Y_i(0)|d_i = 1"
+A: The first term describes the potential outcome of a subject without treatment in the treatment group. 
+The first term (D_1) indicates whether the subject would be treated in a hypothetical experiment, whereas the second term (d_1) indicates the actually observed treatment assignment
+
+
+Q:2.1.c Contrast the meaning of "Y_i(0)" with the meaning of "Y_i(0)|D_i = 0"
+A:The first term describes the potential outcome of an untreated subject, whereas the second term describes the potential outcome for an untreated subject who is part of the control group (does not receive a treatment)
+
+Q:2.1.d Contrast the meaning of "Y_i(0)|D_i = 1" with the meaning of "Y_i(0)|D_i = 0"
+A: The first term describes the potential outcome of an untreated subject, who receives a treatment, whereas in the second term the subject does not receive a treatment. The scond term can be observed, whereas the first one cannot.
+
+Q:2.1.e Contrast the meaning of "E[Y_i(0)]" with the meaning of "E[Y_i(0)|D_i = 1]"
+A: The first term describes the expected potential outcome of an untreated subject. The second term describes the expected potentail outcome of an untreated subject who would be treated in a hypothetical study
+
+Q.2.1.f Explain wh the "selection bias" term in equation (2.15), "E[Y_i(0) | D_i = 1] - E[Y_i(0) | D_i = 0] is zero when D_i is randomly assigned"
+A: Because the expected potential outcome of subjects in the study and the average potential outcomes of all subjects in the population is identical. Thus, the expected potential outcome of subjects in the treatment group and in the control group are identical. 
+
+Q:2.10.a
+A: The letter informing the students that they will receive a newspaper might be already an input which affects the outcome of the study. Thus, our treatment might no be the exclusive cause for the observed outcome. 
+Y_i(1,d) != Y_i(0,d) , we cannot assume that z_i is irrelevant
+
+Q.2.10.b
+A: The student who is part of the treatment group potentially affects the outcome of students who are part of the control group. Other students might receive a treatment (newspaper) despite they should not receive a treatment. Thus, the treatment status of the student receiving the newspaper might affect the potential outcome of a student with a different treatment status.
+Y_i(d_bold) != Y_i(d) 
+
+Q:2.12.a
+A. Since the study does not have control over the treatment, the causal relationship between the outcome and the treatment is not clear. It might be that prisoners who are inclined to be less violent are also inclined to read more. The number of violent encounters with prison staff might be an indicator for the likelihood of prisoner's reading habits. Thus, the expected potential outcome for prioners who received the treatment and who did not receive the treatment is not indentical.
+
+Q.2.12.b
+A: The acutal treatment of the study is "being assigned to a task for 3 hours outside of prisoners normal routine". Reading might not have an effect on the potential outcome, but actually being 3 hours somewhere else than normally. The assumption of the exlusive effect of 3 hours reading per day is violated.
+
+Q.2.12.c.
+The 3 hours reading per day of the prisoners in the treatment group does not affect other prisoners regarding their violent encounters with prison staff
+
+Q.2.12.d.
+One of the causes for violent encounter with prison staff might be violent encounter with other prisoners, since the task of prison staff is to interrupt violence between prisoners. Prisoners in the treatment group are 3 hours per day separated from the other prisoners which per se might decrease the likelihood of violent encounters with other prisoners. Thus, their treatment status affects the potential outcome of other prisoners in the control group. If the policy is expanded to all prisoners, this effect might get dropped.
